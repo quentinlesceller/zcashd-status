@@ -1,8 +1,9 @@
-# bitcoind-status
+# zcashd-status
 
 [![Travis CI Status](https://travis-ci.org/craigwatson/bitcoind-status.svg?branch=master)](https://travis-ci.org/craigwatson/bitcoind-status)
 
-This is a small PHP application designed to display status and information from the Bitcoin node daemon.
+Fork of [Craig Watson bitcoind-status](https://github.com/craigwatson/bitcoind-status).
+This is a small PHP application designed to display status and information from the Zcash node daemon.
 
 #### Table of Contents
 
@@ -16,9 +17,9 @@ This is a small PHP application designed to display status and information from 
 
 To run the application, you will need:
 
-  * A Bitcoin node with RPC enabled.
+  * A Zcash node with RPC enabled.
   * A web-server with PHP installed.
-  * The PHP `curl` module - this is used to make RPC calls to the Bitcoin daemon.
+  * The PHP `curl` module - this is used to make RPC calls to the Zcash daemon.
 
 ### PHP Support
 
