@@ -3,6 +3,7 @@
 [![Travis CI Status](https://travis-ci.org/craigwatson/bitcoind-status.svg?branch=master)](https://travis-ci.org/craigwatson/bitcoind-status)
 
 Fork of [Craig Watson bitcoind-status](https://github.com/craigwatson/bitcoind-status).
+
 This is a small PHP application designed to display status and information from the Zcash node daemon.
 
 #### Table of Contents
