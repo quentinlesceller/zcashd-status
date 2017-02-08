@@ -1,11 +1,13 @@
 <?php
 /**
- * Bitcoin Status Page
+ * Zcash Status Page
  *
  * @category File
- * @package  BitcoinStatus
+ * @package  ZcashStatus
+ * @author   Quentin Le Sceller <q.lesceller@gmail.com>
  * @author   Craig Watson <craig@cwatson.org>
  * @license  https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     https://github.com/quentinlesceller/zcashd-status
  * @link     https://github.com/craigwatson/bitcoind-status
  */
 
@@ -30,7 +32,7 @@ function curlRequest($url, $curl_handle, $fail_on_error = false)
 
     curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Bitcoin Node Status Page');
+    curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Zcash Node Status Page');
     curl_setopt($curl_handle, CURLOPT_URL, $url);
 
     return curl_exec($curl_handle);
@@ -96,8 +98,8 @@ function getData($from_cache = false)
     $data['net_info'] = $bitcoin->getnetworkinfo();
 
     if ($config['display_ip'] === true) {
-        // Use bitcoind IP
-        if ($config['use_bitcoind_ip'] === true) {
+        // Use zcashd IP
+        if ($config['use_zcashd_ip'] === true) {
             $data['node_ip'] = $data['net_info']['localaddresses'][0]['address'];
         } else {
             $data['node_ip'] = $_SERVER['SERVER_ADDR'];
@@ -116,33 +118,32 @@ function getData($from_cache = false)
         curl_close($node_curl);
     }
 
-    // Bitcoin Daemon uptime
-    if (($config['display_bitcoind_uptime'] === true) || (strcmp(PHP_OS, "Linux") == 0)) {
-        $data['bitcoind_uptime'] = getProcessUptime($config['bitcoind_process_name']);
+    // Zcash Daemon uptime
+    if ($config['display_zcashd_uptime'] === true) {
+      if (strcmp(PHP_OS, "Linux") == 0) {
+        $data['zcashd_uptime'] = getLinuxProcessUptime($config['zcashd_process_name']);
+      }
+      elseif (strcmp(PHP_OS,"Darwin") == 0) {
+        $data['zcashd_uptime'] = getDarwinProcessUptime($config['zcashd_process_name']);
+      }
+
     }
 
     if ($config['display_max_height'] || $config['display_bitnodes_info']) {
         $bitnodes_curl = curl_init();
     }
 
-    // Get max height from bitnodes.21.co
+    // Get max height from explorer.testnet.z.cash or zcha.in
     if ($config['display_max_height'] === true) {
         $bitnodes_curl = curl_init();
         if ($config['display_testnet'] === true) {
-            $exec_result = json_decode(curlRequest("https://testnet.blockexplorer.com/api/status?q=getBlockCount", $bitnodes_curl), true);
-            $data['max_height'] = $exec_result['blockcount'];
+            $exec_result = json_decode(curlRequest("https://explorer.testnet.z.cash/api/status?q=getInfo", $bitnodes_curl), true);
+            $data['max_height'] = $exec_result['blocks'];
         } else {
-            $exec_result = json_decode(curlRequest("https://bitnodes.21.co/api/v1/snapshots/", $bitnodes_curl), true);
-            $data['max_height'] = $exec_result['results'][0]['latest_height'];
+            $exec_result = json_decode(curlRequest("https://api.zcha.in/v1/mainnet/network", $bitnodes_curl), true);
+            $data['max_height'] = $exec_result['blockNumber'];
         }
         $data['node_height_percent'] = round(($data['blocks']/$data['max_height'])*100, 1);
-    }
-
-    // Get node info from bitnodes.21.co
-    if ($config['display_bitnodes_info'] === true) {
-        $data['bitnodes_info'] = json_decode(curlRequest("https://bitnodes.21.co/api/v1/nodes/" . $data['node_ip'] . "-8333/", $bitnodes_curl), true);
-        $latency = json_decode(curlRequest("https://bitnodes.21.co/api/v1/nodes/" . $data['node_ip'] . "-8333/latency/", $bitnodes_curl), true);
-        $data['bitnodes_info']['latest_latency'] = $latency['daily_latency'][0]['v'];
     }
 
     // Work out if we should display charts or not
@@ -177,18 +178,39 @@ function displayChart($config_var, $data_file, $min_data_points)
 }
 
 /**
- * Gets uptime of a process - reference: http://unix.stackexchange.com/q/27276/39264
+ * Gets uptime of a process on Linux - reference: http://unix.stackexchange.com/q/27276/39264
  *
  * @param string $process The name of the pricess to find
  *
  * @return string A textual representation of the lifetime of the process
  */
-function getProcessUptime($process)
+function getLinuxProcessUptime($process)
 {
     $process_pid = exec("pidof $process");
     $system_uptime = exec('cut -d "." -f1 /proc/uptime');
     $pid_uptime = round((exec("cut -d \" \" -f22 /proc/$process_pid//stat")/100), 0);
     $seconds = $system_uptime-$pid_uptime;
+    $days = floor($seconds / 86400);
+    $hours = str_pad(floor(($seconds - ($days*86400)) / 3600), 2, "0", STR_PAD_LEFT);
+    $mins = str_pad(floor(($seconds - ($days*86400) - ($hours*3600)) / 60), 2, "0", STR_PAD_LEFT);
+    $secs = str_pad(floor($seconds % 60), 2, "0", STR_PAD_LEFT);
+    return "$days days, $hours:$mins:$secs";
+}
+
+
+/**
+ * Gets uptime of a process on Darwin
+ *
+ * @param string $process The name of the pricess to find
+ *
+ * @return string A textual representation of the lifetime of the process
+ */
+function getDarwinProcessUptime($process)
+{
+    $process_uptime_full = exec(" ps acxo etime,command | grep -i -- $process");
+    $process_uptime = substr($process_uptime_full,0,strrpos ($process_uptime_full ,$process));
+    sscanf($process_uptime, "%d:%d:%d", $proc_hours, $proc_minutes, $proc_seconds);
+    $seconds = $proc_hours * 60 * 60 + $proc_minutes * 60 + $proc_seconds;
     $days = floor($seconds / 86400);
     $hours = str_pad(floor(($seconds - ($days*86400)) / 3600), 2, "0", STR_PAD_LEFT);
     $mins = str_pad(floor(($seconds - ($days*86400) - ($hours*3600)) / 60), 2, "0", STR_PAD_LEFT);
