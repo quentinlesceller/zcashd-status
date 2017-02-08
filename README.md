@@ -1,6 +1,6 @@
 # zcashd-status
 
-[![Travis CI Status](https://travis-ci.org/craigwatson/bitcoind-status.svg?branch=master)](https://travis-ci.org/craigwatson/bitcoind-status)
+[![Travis CI Status](https://travis-ci.org/quentinlesceller/zcashd-status.svg?branch=master)](https://travis-ci.org/quentinlesceller/zcashd-status)
 
 Fork of [Craig Watson bitcoind-status](https://github.com/craigwatson/bitcoind-status).
 
