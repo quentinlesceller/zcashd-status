@@ -1,12 +1,13 @@
 <?php
 /**
- * Bitcoin Status Page
+ * Zcash Status Page
  *
  * @category File
- * @package  BitcoinStatus
+ * @package  ZcashStatus
+ * @author   Quentin Le Sceller <q.lesceller@gmail.com>
  * @author   Craig Watson <craig@cwatson.org>
  * @license  https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
- * @link     https://github.com/craigwatson/bitcoind-status
+ * @link     https://github.com/quentinlesceller/zcashd-status
  */
 
 if (!is_file('./php/config.php')) {

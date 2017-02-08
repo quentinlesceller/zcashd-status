@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bitcoin Node Status</title>
+  <title>Zcash Node Status</title>
   <link rel="icon" type="image/png" href="img/favicon.png" />
   <link rel="stylesheet" href="css/pure-min.css">
   <link rel="stylesheet" href="css/flags.css">
@@ -73,7 +73,7 @@
 <div id="container" class="pure-g">
 
   <div class="pure-u-1 pure-u-md-1-1">
-    <h1>Bitcoin Node Status</h1>
+    <h1>Zcash Node Status</h1>
     <?php
       if (isset($cache_message)) {
         echo '<p class="cache small">' . $cache_message . '</p>';
@@ -84,13 +84,13 @@
       }
 
       if ($config['display_donation_text'] === TRUE) {
-        echo '<p class="donation">' . "Please support this Bitcoin node by donating to <a href='http://blocktrail.com/address/" . $config['donation_address'] . "' target='_blank'>" . $config['donation_address'] . "</a></p>";
+        echo '<p class="donation">' . "Please support this Zcash node by donating to <a href='https://explorer.zcha.in/accounts/" . $config['donation_address'] . "' target='_blank'>" . $config['donation_address'] . "</a></p>";
       }
     ?>
   </div>
 
   <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 image">
-    <?php if (strcmp($config['donation_address'],'not_set') == 0){ echo '<img src="img/logo.png" alt="Bitcoin Logo" class="logo" />'; } else { echo generateDonationImage(); } ?>
+    <?php if (strcmp($config['donation_address'],'not_set') == 0){ echo '<img src="img/logo.png" alt="Zcash Logo" class="logo" />'; } else { echo generateDonationImage(); } ?>
     <?php if ((is_array($config['node_links'])) & (count($config['node_links']) > 0)) { echo '<div style="padding:10px;text-align:center"><p class="stat"><span class="label">Node Links</span></p>'; foreach ($config['node_links'] as $node_link) { ?>
         <a target="_blank" title="<?php echo $node_link['name']; ?>" href="<?php echo $node_link['link']; ?>"><?php if(isset($node_link['image'])) { ?><img src="<?php echo $node_link['image']; ?>" style="float: left;margin-left: 20px" alt="<?php echo $node_link['name']; ?>"/><?php } else { echo $node_link['name']; } ?></a>
     <?php } echo '</div>'; } ?>
@@ -99,7 +99,7 @@
   <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-2-3">
 <?php if (isset($data['error'])) { ?>
     <div class="red">
-      <h2>There has been an error communicating with the Bitcoin Daemon</h2>
+      <h2>There has been an error communicating with the Zcash Daemon</h2>
       <pre><?php echo $data['error']; ?></pre>
       <p>Please report this to <a href="mailto:<?php echo $config['admin_email']; ?>"><?php echo $config['admin_email']; ?></a></p>
     </div>
@@ -110,9 +110,6 @@
 <?php } ?>
 <?php if ($data['display_peer_chart'] === true) { ?>
       <div id="peer_chart" style="width: 100%; height: 20%"></div>
-<?php } ?>
-<?php if (isset($data['bitnodes_info']) === true) { ?>
-      <p class="stat"><span class="label">Latest Bitnodes Latency:</span> <?php if ($data['bitnodes_info']['latest_latency'] !== 0) { echo $data['bitnodes_info']['latest_latency'] . "ms"; } else { echo "Unavailable"; } ?></p>
 <?php } ?>
       <p class="stat">
           <span class="label">Node Height:</span> <?php echo $data['blocks']; ?>
@@ -131,8 +128,8 @@
 <?php if (isset($config['display_version']) && $config['display_version']) { ?>
       <p class="stat"><span class="label">Node Version:</span> <?php echo preg_replace(array('/\//','/:/'),array('',' '),$data['net_info']['subversion']); ?></p>
 <?php } ?>
-<?php if (isset($data['bitcoind_uptime'])) { ?>
-      <p class="stat"><span class="label">Bitcoin Daemon Uptime:</span> <?php echo $data['bitcoind_uptime']; ?></p>
+<?php if (isset($data['zcashd_uptime'])) { ?>
+      <p class="stat"><span class="label">Zcash Daemon Uptime:</span> <?php echo $data['zcashd_uptime']; ?></p>
 <?php } ?>
 <?php if ((isset($data['ip_location'])) && (strcmp($data['ip_location']['country_code'], 'blank') != 0)) { ?>
       <p class="stat"><span class="label">Node Location:</span> <img src="img/blank.gif" class="flag flag-<?php echo strtolower($data['ip_location']['country_code']); ?>" alt="<?php echo $data['ip_location']['country_name']; ?>" /> <?php echo $data['ip_location']['country_name']; ?></p>
@@ -186,6 +183,7 @@
   <div id="footer" class="pure-u-1-1 pure-u-md-1-1 pure-u-lg-1-1">
     <hr />
     <p>
+       <a href="https://github.com/quentinlesceller/zcashd-status">Zcash Status Page</a> by Quentin Le Sceller forked from
        <a href="https://github.com/craigwatson/bitcoind-status">Bitcoin Daemon Status Page</a> by <a href="https://cwatson.org">Craig Watson</a>, distributed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a><br />
        Please send donations to: <a href="https://www.blocktrail.com/BTC/address/15sLQBY3TnCRX5rYLqt8gxPqmnxU4JrKBn" target="_blank">15sLQBY3TnCRX5rYLqt8gxPqmnxU4JrKBn</a><br />
        IP Geolocation by <a href="http://www.geoplugin.com" target="_new">geoPlugin</a>, using GeoLite2 data from <a href="https://www.maxmind.com" target="_new">MaxMind</a><br />

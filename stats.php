@@ -1,6 +1,6 @@
 <?php
 /**
- * Bitcoin Status Page - Stats
+ * Zcash Status Page - Stats
  *
  * @category File
  * @package  BitcoinStatus

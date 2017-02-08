@@ -1,11 +1,13 @@
 <?php
 /**
- * Bitcoin Status Page
+ * Zcash Status Page
  *
  * @category File
- * @package  BitcoinStatus
+ * @package  ZcashStatus
+ * @author   Quentin Le Sceller <q.lesceller@gmail.com>
  * @author   Craig Watson <craig@cwatson.org>
  * @license  https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     https://github.com/quentinlesceller/zcashd-status
  * @link     https://github.com/craigwatson/bitcoind-status
  */
 
@@ -14,7 +16,7 @@ $config = array(
   'rpc_user'                  => 'status',
   'rpc_pass'                  => 'statustest',
   'rpc_host'                  => 'localhost',
-  'rpc_port'                  => '8332',
+  'rpc_port'                  => '8232',
   'rpc_ssl'                   => false,
   'rpc_ssl_ca'                => null,
 
@@ -47,9 +49,8 @@ $config = array(
   'display_version'           => true,
   'display_github_ribbon'     => false,
   'display_max_height'        => true,
-  'use_bitcoind_ip'           => true,
+  'use_zcashd_ip'             => true,
   'intro_text'                => 'not_set',
-  'display_bitnodes_info'     => false,
   'display_chart'             => true,
   'display_peer_chart'        => true,
   'node_links'                => array(),
@@ -68,8 +69,8 @@ $config = array(
   'peercount_extra_nodes'     => array(),
 
   // Uptime
-  'display_bitcoind_uptime'   => false,
-  'bitcoind_process_name'     => 'bitcoind',
+  'display_zcashd_uptime'     => false,
+  'zcashd_process_name'       => 'zcashd',
 
   // System
   'date_format'               => 'H:i:s T, j F Y ',

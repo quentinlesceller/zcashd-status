@@ -1,11 +1,13 @@
 <?php
 /**
- * Bitcoin Status Page - Stats
+ * Zcash Status Page - Stats
  *
  * @category File
- * @package  BitcoinStatus
+ * @package  ZcashStatus
+ * @author   Quentin Le Sceller <q.lesceller@gmail.com>
  * @author   Craig Watson <craig@cwatson.org>
  * @license  https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     https://github.com/quentinlesceller/zcashd-status
  * @link     https://github.com/craigwatson/bitcoind-status
  */
 
@@ -28,7 +30,7 @@ case 'connection':
 case 'peer':
     $data_file  = $config['peercount_file'];
     $min_points = $config['peercount_min_data_points'];
-    $headers    = array('Date','Other','Classic','BitCoinJ','Core','Unlimited');
+    $headers    = array('Date','Other','Linux','Windows');
     $prefixes   = array('new Date(','','','','');
     $postfixes  = array('*1000)','','','','');
 
